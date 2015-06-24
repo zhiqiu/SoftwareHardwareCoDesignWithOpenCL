@@ -9,7 +9,9 @@ use parallel computing to reduce the time consuming
 
 
 ### algorithm description
-
+1. lane detection
+2. vehicle detection
+2.2
 
 ### time schedule
 1. install opencl sdk, and try opencl demo  --done
