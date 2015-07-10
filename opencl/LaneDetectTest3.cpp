@@ -1,6 +1,7 @@
 /*
-¾¡Á¿²»ÓÃãĞÖµµ÷½Ú+·ÖÇø¼ì²â+ÇúÏßÄâºÏ+Ô¤²â
+å°½é‡ä¸ç”¨é˜ˆå€¼è°ƒèŠ‚+åˆ†åŒºæ£€æµ‹+æ›²çº¿æ‹Ÿåˆ+é¢„æµ‹
 */
+
 
 #include<iostream>
 //#include"lsd.h"
@@ -13,7 +14,7 @@ int main(){
 	LaneDetector ld;
 	ld.setInput("D:/WorkSpace/VisualStudio/Bird_Eye/Bird_Eye/Video20111021124915174.avi");
 
-	//Í¼ÏñÇĞ¸î£¬Ö®ºó¿ÉÓÃÍ¼Ïñ·Ö¸îËã·¨ÕÒ³öÌì¿ÕÓëµØÃæ½»µã£¬¸üºÃÇó³ö·Ö¸îµã
+	//å›¾åƒåˆ‡å‰²ï¼Œä¹‹åå¯ç”¨å›¾åƒåˆ†å‰²ç®—æ³•æ‰¾å‡ºå¤©ç©ºä¸åœ°é¢äº¤ç‚¹ï¼Œæ›´å¥½æ±‚å‡ºåˆ†å‰²ç‚¹
 	ld.cutY = ld.originHeight / 3 - 50 ;
 	ld.cutHeight = ld.originHeight / 3 ;
 	//ld.cutHeight = ld.originHeight - ld.cutY;
@@ -21,17 +22,17 @@ int main(){
 	ld.capture >> ld.image;
 	ld.image(ld.rect1).copyTo( ld.ImageCut);
 
-	//lsdÖ±Ïß¼ì²â
+	//lsdç›´çº¿æ£€æµ‹
 	ld.lsdDetect(ld.ImageCut, ld.laneinfos, PERSPECTIVEMODE);
 	ld.myNormalize(ld.laneinfos);
 	/*Mat show = ld.drawLine(ld.ImageCut, ld.laneinfos, DRAWNORMAL);
 	imshow("show",show);
 	waitKey(0);*/
 
-	//¾ÛÀà
+	//èšç±»
 	ld.clusterNum = 0;
 	ld.myBisectKmeans_Extend_Angle(ld.laneinfos, ld.SeperateLine, ld.clusterNum, 0.25);
-	//cout<<"clusterNum£º "<<ld.clusterNum<<endl;
+	//cout<<"clusterNumï¼š "<<ld.clusterNum<<endl;
 	//Mat clusterShow = ld.drawLine(ld.ImageCut, ld.SeperateLine, ld.clusterNum);
 	ld.getAbstractLane(ld.SeperateLine, ld.abstractLane, ld.clusterNum);
 	//Mat abstrShow =  ld.drawLine(ld.ImageCut, ld.abstractLane);
@@ -50,7 +51,7 @@ int main(){
 	ld.ImageIPM = Mat::zeros(ld.ImageCut.cols,ld.ImageCut.rows,ld.ImageCut.type());
 	warpPerspective(ld.ImageCut,ld.ImageIPM,ld.WarpMatrix,Size(ld.ImageCut.cols,ld.ImageCut.rows));
 
-	//·Ö¶Î
+	//åˆ†æ®µ
 	for(int i=0; i<PARTITION; i++){
 		ld.HeightPartition[i] = i *ld.cutHeight / 4;
 		line(ld.ImageCut, Point(0,ld.HeightPartition[i]), Point(ld.originWidth, ld.HeightPartition[i]), Scalar(255), 3);
@@ -58,12 +59,12 @@ int main(){
 		ld.ImageIPM(rect).copyTo(ld.ImageIPMPartition[i]);
 	}
 	
-	//Çó³öÄæ¾ØÕó
+	//æ±‚å‡ºé€†çŸ©é˜µ
 	ld.InverseWarpMatrix = Mat::zeros(3,3,CV_32FC1);
 	invert(ld.WarpMatrix, ld.InverseWarpMatrix);
 
-	//µÚÒ»´Î¼ì²â
-	//¶ÔPARTITION¸öÇø¼ä½øĞĞ¼ì²â£¬ÕÒµ½Ö±Ïß£¬²¢½«ÆäÖĞµã·ÅÈëÄ³¸ö½á¹¹ÖĞ´¢´æ
+	//ç¬¬ä¸€æ¬¡æ£€æµ‹
+	//å¯¹PARTITIONä¸ªåŒºé—´è¿›è¡Œæ£€æµ‹ï¼Œæ‰¾åˆ°ç›´çº¿ï¼Œå¹¶å°†å…¶ä¸­ç‚¹æ”¾å…¥æŸä¸ªç»“æ„ä¸­å‚¨å­˜
 	for(int i=0; i<PARTITION; i++){
 
 		ld.lsdDetect(ld.ImageIPMPartition[i], ld.lanePartition[i], BIRDEYEMODE);
@@ -71,7 +72,7 @@ int main(){
 		//Mat show1 = ld.drawLine(ld.ImageIPMPartition[i], ld.lanePartition[i], DRAWNORMAL);
 		//cout<<"ld.lanePartition[i] num: "<<ld.lanePartition[i].size()<<endl;
 
-		//°´Pt1.x¾ÛÀà
+		//æŒ‰Pt1.xèšç±»
 		ld.partitionClusterNum[i] = 0;
 		ld.myBisectKmeans_PtX(ld.lanePartition[i], ld.lanePartitionSeperate[i], ld.partitionClusterNum[i], 10);
 		//Mat show = ld.drawLine(ld.ImageIPMPartition[i], ld.lanePartitionSeperate[i], ld.partitionClusterNum[i], DRAWNORMAL);
@@ -85,22 +86,22 @@ int main(){
 
 		ld.getAbstractLane(ld.lanePartitionSeperate[i], ld.lanePartitionAbstract[i], ld.partitionClusterNum[i]);
 
-		for(int j=0; j<ld.lanePartitionAbstract[i].size(); j++){//Çø·Ö¸ÃÏßÊôÓÚÄÄÒ»¸öÇø¼ä
+		for(int j=0; j<ld.lanePartitionAbstract[i].size(); j++){//åŒºåˆ†è¯¥çº¿å±äºå“ªä¸€ä¸ªåŒºé—´
 			ld.lanePartitionAbstract[i][j].partitionType = i;
 
-			//È·¶¨³ö¼ì²âÇøÓò
+			//ç¡®å®šå‡ºæ£€æµ‹åŒºåŸŸ
 			DetectArea da;
 			da.startX = ld.lanePartitionAbstract[i][j].midPoint.x - 30;
 			da.endX = ld.lanePartitionAbstract[i][j].midPoint.x + 30;
 			da.partitionType = i;
 			da.length = 60;
-			da.height = 100; //¸Ã´¦¿ÉÄÜ²úÉúbug£¬Òª×¢Òâ
+			da.height = 100; //è¯¥å¤„å¯èƒ½äº§ç”Ÿbugï¼Œè¦æ³¨æ„
 			ld.detectArea[i].push_back(da);
 		}	
 		//Mat PartitionShow = ld.drawLine(ld.ImageIPMPartition[i], ld.lanePartitionAbstract[i], DRAWEXTEND);
 
-		//½«¼ì²â³öµÄÏßµÄÖĞµãÍ¶Ó°£¬½øĞĞ±´Èû¶ûÇúÏßÄâºÏ	
-		//vector<Point> points = ld.LaneProject(i); //Éµ±ÆÁË...²»Ó¦¸ÃÕâÑù×ö
+		//å°†æ£€æµ‹å‡ºçš„çº¿çš„ä¸­ç‚¹æŠ•å½±ï¼Œè¿›è¡Œè´å¡å°”æ›²çº¿æ‹Ÿåˆ	
+		//vector<Point> points = ld.LaneProject(i); //å‚»é€¼äº†...ä¸åº”è¯¥è¿™æ ·åš
 		//Mat test = ld.drawPoints(ld.image,points);
 
 		//imshow("test",test);
@@ -125,22 +126,22 @@ int main(){
 	}*/
 
 
-	//½«µÃµ½µÄ¸÷ÇøÏß¶Î½øĞĞ·ÖÀà
-	//ÏÈ½«µÚÒ»¿éµÄÏßÅÅºÃ£»
+	//å°†å¾—åˆ°çš„å„åŒºçº¿æ®µè¿›è¡Œåˆ†ç±»
+	//å…ˆå°†ç¬¬ä¸€å—çš„çº¿æ’å¥½ï¼›
 	ld.sameLaneNum = 0;
 	for(int i=0; i<ld.lanePartitionAbstract[0].size(); i++){
 		ld.lanePartitionAbstract[0][i].clusterType = ld.sameLaneNum++;
 		ld.sameLane[i].push_back(ld.lanePartitionAbstract[0][i]);
 	}
-	//ÔÙÅÅÊ£ÓàµÄ¿é£¬·ÖÀà
+	//å†æ’å‰©ä½™çš„å—ï¼Œåˆ†ç±»
 	for(int i=1; i<PARTITION; i++){
-		for(int j=0; j<ld.lanePartitionAbstract[i].size(); j++){//¶ÔÓÚÃ¿Ò»ÌõÔÚpartitionÖĞµÄÏß
+		for(int j=0; j<ld.lanePartitionAbstract[i].size(); j++){//å¯¹äºæ¯ä¸€æ¡åœ¨partitionä¸­çš„çº¿
 			bool flag = false;
 			for(int k=0; k<ld.lanePartitionAbstract[i-1].size(); k++){
-				if(abs(ld.lanePartitionAbstract[i][j].extendPt1.x - ld.lanePartitionAbstract[i-1][k].extendPt1.x) < 10 ){//ÔòÈÏÎªËûÃÇÊÇÒ»Àà
+				if(abs(ld.lanePartitionAbstract[i][j].extendPt1.x - ld.lanePartitionAbstract[i-1][k].extendPt1.x) < 10 ){//åˆ™è®¤ä¸ºä»–ä»¬æ˜¯ä¸€ç±»
 					//cout<<"clusterType"<<ld.lanePartitionAbstract[i-1][k].clusterType<<endl;
 					ld.sameLane[ld.lanePartitionAbstract[i-1][k].clusterType].push_back(ld.lanePartitionAbstract[i][j]);
-					ld.lanePartitionAbstract[i][j].clusterType = ld.lanePartitionAbstract[i-1][k].clusterType;//Õâ¸ö±Ø²»¿ÉÉÙ
+					ld.lanePartitionAbstract[i][j].clusterType = ld.lanePartitionAbstract[i-1][k].clusterType;//è¿™ä¸ªå¿…ä¸å¯å°‘
 					flag = true;
 					/*Mat test;
 					ld.ImageIPMPartition[i].copyTo(test);
@@ -175,7 +176,7 @@ int main(){
 	}
 	imshow("sameTest",sameTest);
 	waitKey(0);*/
-	//½«·ÖºÃµÄÏßÍ¶Ó°»ØÈ¥£¬Í¶Ó°²ÎÊı£ºextend.x extend.y mid.x mid.y
+	//å°†åˆ†å¥½çš„çº¿æŠ•å½±å›å»ï¼ŒæŠ•å½±å‚æ•°ï¼šextend.x extend.y mid.x mid.y
 	for(int i=0; i<ld.sameLaneNum; i++){
 		//cout<<"same lane: "<<ld.sameLane[i].size()<<endl;
 		ld.projectLane[i] = ld.LaneProject(ld.sameLane[i]);
@@ -188,7 +189,7 @@ int main(){
 	//Mat test = ld.drawLine(ld.image, ld.projectLane, ld.sameLaneNum ,DRAWEXTEND);
 	//imshow("test",test);
 
-	//BezierÇúÏß
+	//Bezieræ›²çº¿
 	Mat result ;
 	ld.image.copyTo(result);
 	for(int i=0; i<ld.sameLaneNum; i++){
@@ -202,7 +203,7 @@ int main(){
 			}
 			ld.ecvDrawBezier(result,points);
 		}
-		else if(size > 1){//Èô¼ì²âµ½µÄÏß¶ÎÊıÉÙÓÚËÄÇÒ´óÓÚÒ»£¬ÔòÓÃ×îĞ¡¶ş³ËÄâºÏ
+		else if(size > 1){//è‹¥æ£€æµ‹åˆ°çš„çº¿æ®µæ•°å°‘äºå››ä¸”å¤§äºä¸€ï¼Œåˆ™ç”¨æœ€å°äºŒä¹˜æ‹Ÿåˆ
 			vector<Point> points;
 			Vec4f lines;
 			for(int m=0; m<size; m++){
@@ -219,7 +220,7 @@ int main(){
 			line(result, Point(ConvertLine[0],ConvertLine[1]),Point(ConvertLine[2],ConvertLine[3]), Scalar(255), 3);
 		}
 		else{	
-			//Ö»ÓĞÒ»ÌõÖ±Ïß
+			//åªæœ‰ä¸€æ¡ç›´çº¿
 			line(result, ld.projectLane[i][0].extendPt1, ld.projectLane[i][0].extendPt2, Scalar(255), 3);
 		}
 	}
@@ -231,25 +232,25 @@ int main(){
 	//imshow("clusterShow",clusterShow);
 	waitKey(0);
 
-	//ÕÒ³ö¿ÉÄÜ¼ì²âÇøÓò
+	//æ‰¾å‡ºå¯èƒ½æ£€æµ‹åŒºåŸŸ
 
-	//¿ªÊ¼³£¹æ¼ì²â£º IPMÖĞ·ÖÇøÍ¼¼ÓĞ¡¿é¼ì²â
+	//å¼€å§‹å¸¸è§„æ£€æµ‹ï¼š IPMä¸­åˆ†åŒºå›¾åŠ å°å—æ£€æµ‹
 	while(true){
-		//¼ôÇĞÍ¼Æ¬
+		//å‰ªåˆ‡å›¾ç‰‡
 		ld.capture >> ld.image;
 		ld.image(ld.rect1).copyTo( ld.ImageCut);
 		//IPM
 		warpPerspective(ld.ImageCut,ld.ImageIPM,ld.WarpMatrix,Size(ld.ImageCut.cols,ld.ImageCut.rows));
-		//·Ö¶Î
+		//åˆ†æ®µ
 		for(int i=0; i<PARTITION; i++){
 			ld.HeightPartition[i] = i *ld.cutHeight / 4;
 			line(ld.ImageCut, Point(0,ld.HeightPartition[i]), Point(ld.originWidth, ld.HeightPartition[i]), Scalar(255), 3);
 			Rect rect(0, ld.HeightPartition[i], ld.originWidth, ld.cutHeight / 4);
 			ld.ImageIPM(rect).copyTo(ld.ImageIPMPartition[i]);
-			//³õÊ¼»¯
+			//åˆå§‹åŒ–
 			ld.lanePartition[i].clear();
 		}
-		//·ÖÇø²¢¼ì²â
+		//åˆ†åŒºå¹¶æ£€æµ‹
 		for(int i=0; i<PARTITION; i++){
 			int detectNum = ld.detectArea[i].size();
 			for(int j=0; j<detectNum; j++){
