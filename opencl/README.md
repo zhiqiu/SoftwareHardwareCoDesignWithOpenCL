@@ -22,4 +22,4 @@ use parallel computing to reduce the time consuming
 6. write report and final pre --TBD
 
 ### note
-
+1. pre at 6.24
