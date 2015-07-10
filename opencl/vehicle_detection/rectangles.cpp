@@ -3,6 +3,7 @@
 bool cmp(const rectw &a, const rectw &b)
 {
 	return a.w > b.w;
+	
 }
 
 void non_max_sp(std::vector<cv::Rect_<double>> &rect, std::vector<double> &scores, Para param, std::vector<cv::Rect_<double>> &drect, std::vector<double> &dscores)
