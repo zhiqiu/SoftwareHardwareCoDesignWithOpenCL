@@ -16,8 +16,8 @@ use Legendre transform to do real time caculas
 4. real time caculas
 
 ### time schedule
-1. read the three papers, understand the algorithm
-2. try to find some refernce of RTC and Legendre transform
+1. read these three papers, understand the algorithm
+2. try to find some reference of RTC and Legendre transform
 3. use legendre transform to do RTC
 4. do some experients
 5. write report and final pre
